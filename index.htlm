@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+
+  <meta charset="UTF-8">
+  
+<link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+<meta name="apple-mobile-web-app-title" content="CodePen">
+
+<link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+<link rel="mask-icon" type="" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+
+
+  <title>CodePen - 2078-5</title>
+  
+  
+  
+  
+<style>
+#myCanvas{
+  background-color:#(333);
+}
+</style>
+
+  
+  
+  
+  
+
+</head>
+
+<body translate="no" >
+  <canvas id="myCanvas" width="400" height="400">
+  ur browser doesn't support canvas ):
+  </canvas>
+  
+  
+      <script id="rendered-js" >
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+let radius = canvas.height / 2;
+ctx.translate(radius, radius);
+radius = radius * 0.9;
+drawClock();
+
+function drawClock() {
+  drawFace(ctx, radius);
+  drawNumbers(ctx, radius);
+  drawTime(ctx, radius);
+}
+
+function drawFace(ctx, radius) {
+  var grad;
+
+  ctx.beginPath();
+  ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+  ctx.fillStyle = 'black';
+  ctx.fill();
+
+  grad = ctx.createRadialGradient(0, 0 ,radius * 0.95, 0, 0, radius * 1.05);
+  grad.addColorStop(0, '#180');
+  grad.addColorStop(0.5, 'coral');
+  grad.addColorStop(1, '#748');
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = radius*0.1;
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.arc(0, 0, radius * 0.1, 0, 2 * Math.PI);
+  ctx.fillStyle = '#FFF';
+  ctx.fill();
+}
+
+function drawNumbers(ctx, radius) {
+  var ang;
+  var num;
+  ctx.font = radius * 0.15 + "px Times New Roman";
+  ctx.fillStyle = "white"
+  ctx.textBaseline = "middle";
+  ctx.textAlign = "center";
+  for(num = 1; num < 25; num++){
+    ang = num * Math.PI / 12;
+    ctx.rotate(ang);
+    ctx.translate(0, -radius * 0.85);
+    ctx.rotate(-ang);
+    ctx.fillText(num.toString(), 0, 0);
+    ctx.rotate(ang);
+    ctx.translate(0, radius * 0.85);
+    ctx.rotate(-ang);
+  }
+}
+
+function drawTime(ctx, radius){
+  var now = new Date();
+  var hour = now.getHours();
+  var minute = now.getMinutes();
+  var second = now.getSeconds();
+  //hour
+  hour = hour%24;
+  hour = (hour*Math.PI/12)+(minute*Math.PI/(6*120))+(second*Math.PI/(360*120));
+  drawHand(ctx, hour, radius*0.5, radius*0.07);
+  //minute
+  minute = (minute*Math.PI/30)+(second*Math.PI/(30*60));
+  drawHand(ctx, minute, radius*0.8, radius*0.07);
+  // second
+  second = (second*Math.PI/30);
+  drawHand(ctx, second, radius*0.9, radius*0.02);
+}
+
+function drawHand(ctx, pos, length, width) {
+  ctx.beginPath();
+  ctx.lineWidth = width;
+  ctx.lineCap = "round";
+  ctx.moveTo(0,0);
+  ctx.rotate(pos);
+  ctx.lineTo(0, -length);
+  ctx.stroke();
+  ctx.rotate(-pos);
+}
+  
+  
+  setInterval(drawClock, 1000);
+    </script>
+
+  
+
+</body>
+
+</html>
+ 
